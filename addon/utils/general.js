@@ -1,5 +1,7 @@
 // converts slash paths to dot paths so nested hash values can be fetched with Ember.get
 // foo/bar/baz -> foo.bar.baz
+import { htmlSafe } from '@ember/template';
+
 export function dottify(path) {
   return (path.toString() || '').replace(/^\//g, '').replace(/\//g, '.');
 }
@@ -17,5 +19,5 @@ export function applyOptions(svg, options) {
   }
 
   // now we have 2 problems...
-  return svg.replace('<svg', '<svg'+Ember.String.htmlSafe(optString));
+  return svg.replace('<svg', '<svg'+htmlSafe(optString));
 }
