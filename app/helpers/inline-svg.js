@@ -1,17 +1,7 @@
-import Ember from "ember";
-import Helper, { helper as buildHelper } from '@ember/component/helper';
+import { helper } from '@ember/component/helper';
 import { inlineSvg } from 'ember-inline-svg/helpers/inline-svg';
 import SVGs from '../svgs';
 
-let helper;
-if (Helper && buildHelper) {
-  helper = buildHelper(function([path], options) {
-    return inlineSvg(SVGs, path, options);
-  });
-} else {
-  helper = Ember.Handlebars.makeBoundHelper(function(path, options) {
-    return inlineSvg(SVGs, path, options.hash || {});
-  });
-}
-
-export default helper;
+export default helper(function([path], options) {
+  return inlineSvg(SVGs, path, options);
+});
