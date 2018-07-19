@@ -1,54 +1,46 @@
+import { findAll, visit } from '@ember/test-helpers';
 import { run } from '@ember/runloop';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
 
 var App;
 
-module('Acceptance: InlineSvg', {
-  beforeEach: function() {
+module('Acceptance: InlineSvg', function(hooks) {
+  hooks.beforeEach(function() {
     App = startApp();
-  },
-  afterEach: function() {
+  });
+
+  hooks.afterEach(function() {
     run(App, 'destroy');
-  }
-});
-
-test('displays SVG at root', function(assert) {
-  visit('/root');
-
-  andThen(function() {
-    assert.ok(find(".kiwi-image-at-root svg").length, "has an SVG");
   });
-});
 
-test('displays SVG in subdirectory', function(assert) {
-  visit('/subdirectory');
+  test('displays SVG at root', async function(assert) {
+    await visit('/root');
 
-  andThen(function() {
-    assert.ok(find(".kiwi-image-in-directory svg").length, "has an SVG which is in a directory");
+    assert.ok(findAll(".kiwi-image-at-root svg").length, "has an SVG");
   });
-});
 
-test('adds class to SVG', function(assert) {
-  visit('/class');
+  test('displays SVG in subdirectory', async function(assert) {
+    await visit('/subdirectory');
 
-  andThen(function() {
-    assert.ok(find(".kiwi-image-with-a-class svg.with-a-class").length, "has added the class");
+    assert.ok(findAll(".kiwi-image-in-directory svg").length, "has an SVG which is in a directory");
   });
-});
 
-test('trims unnecessary .svg` extension', function(assert) {
-  visit('/extension');
+  test('adds class to SVG', async function(assert) {
+    await visit('/class');
 
-  andThen(function() {
-    assert.ok(find(".kiwi-image-with-extension svg").length, "has an SVG, extension was trimmed");
+    assert.ok(findAll(".kiwi-image-with-a-class svg.with-a-class").length, "has added the class");
   });
-});
 
-test('runs through SVGO', function(assert) {
-  visit('/root');
+  test('trims unnecessary .svg` extension', async function(assert) {
+    await visit('/extension');
 
-  andThen(function() {
-    assert.ok(!find(".kiwi-image-at-root svg title").length, "has stripped the title");
+    assert.ok(findAll(".kiwi-image-with-extension svg").length, "has an SVG, extension was trimmed");
+  });
+
+  test('runs through SVGO', async function(assert) {
+    await visit('/root');
+
+    assert.ok(!findAll(".kiwi-image-at-root svg title").length, "has stripped the title");
   });
 });
