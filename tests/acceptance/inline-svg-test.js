@@ -1,19 +1,11 @@
 import { findAll, visit } from '@ember/test-helpers';
-import { run } from '@ember/runloop';
 import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
+import { setupApplicationTest } from 'ember-qunit';
 
-var App;
 
 module('Acceptance: InlineSvg', function(hooks) {
-  hooks.beforeEach(function() {
-    App = startApp();
-  });
-
-  hooks.afterEach(function() {
-    run(App, 'destroy');
-  });
-
+  setupApplicationTest(hooks);
+  
   test('displays SVG at root', async function(assert) {
     await visit('/root');
 
